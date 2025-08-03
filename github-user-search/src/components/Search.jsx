@@ -1,5 +1,6 @@
 // src/components/Search.jsx
 import React, { useState } from 'react';
+import { fetchUserData } from '../services/githubService';
 
 const Search = () => {
   const [username, setUsername] = useState('');
@@ -16,7 +17,7 @@ const Search = () => {
       const data = await fetchUserData(username);
       setUserData(data);
     } catch (err) {
-      setError(err.message);
+      setError("Looks like we can't find the user");
     } finally {
       setLoading(false);
     }
@@ -36,7 +37,7 @@ const Search = () => {
       </form>
 
       {loading && <p>Loading...</p>}
-      {error && <p>Looks like we can't find the user</p>}
+      {error && <p>{error}</p>}
       {userData && (
         <div>
           <img src={userData.avatar_url} alt="User Avatar" width="100" />
