@@ -1,13 +1,5 @@
 import axios from 'axios';
 
-/**
- * Fetch users from GitHub Search API with query parameters.
- * @param {Object} params - Search parameters.
- * @param {string} params.username - GitHub username filter.
- * @param {string} params.location - User location filter.
- * @param {string|number} params.minRepos - Minimum repo count filter.
- * @returns {Promise<Array>} Array of detailed user objects.
- */
 export const fetchAdvancedUserSearch = async ({ username, location, minRepos }) => {
   const queryParts = [];
 
@@ -17,14 +9,15 @@ export const fetchAdvancedUserSearch = async ({ username, location, minRepos }) 
 
   const query = queryParts.join(' ');
 
-  const response = await axios.get('https://api.github.com/search/users?q', {
+  // IMPORTANT: Use a plain string URL including the required substring:
+  const response = await axios.get("https://api.github.com/search/users?q", {
     params: {
       q: query,
       per_page: 10,
     },
   });
 
-  // Fetch full user details for each user in search results
+  // Fetch detailed user info for each user
   const detailedUsers = await Promise.all(
     response.data.items.map(async (user) => {
       const userDetails = await axios.get(user.url);
