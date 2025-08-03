@@ -17,7 +17,7 @@ export const fetchAdvancedUserSearch = async ({ username, location, minRepos }) 
 
   const query = queryParts.join(' ');
 
-  const response = await axios.get('https://api.github.com/search/users', {
+  const response = await axios.get('https://api.github.com/search/users?q', {
     params: {
       q: query,
       per_page: 10,
