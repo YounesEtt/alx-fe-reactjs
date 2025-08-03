@@ -1,5 +1,12 @@
 import axios from 'axios';
 
+// Step 1: Basic user fetch function by username
+export const fetchUserData = async (username) => {
+  const response = await axios.get(`https://api.github.com/users/${username}`);
+  return response.data;
+};
+
+// Existing advanced search function
 export const fetchAdvancedUserSearch = async ({ username, location, minRepos }) => {
   const queryParts = [];
 
