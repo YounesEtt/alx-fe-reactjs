@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { fetchUserData } from '../services/githubService';
 
 const Search = () => {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('Sigurdthe');
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -17,7 +17,7 @@ const Search = () => {
       const data = await fetchUserData(username);
       setUserData(data);
     } catch (err) {
-      setError("Looks like we can't find the user");
+      setError("An error occurred while fetching user data.");
     } finally {
       setLoading(false);
     }
