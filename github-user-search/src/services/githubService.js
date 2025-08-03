@@ -1,5 +1,13 @@
 import axios from 'axios';
 
+/**
+ * Fetch users from GitHub Search API with query parameters.
+ * @param {Object} params - Search parameters.
+ * @param {string} params.username - GitHub username filter.
+ * @param {string} params.location - User location filter.
+ * @param {string|number} params.minRepos - Minimum repo count filter.
+ * @returns {Promise<Array>} Array of detailed user objects.
+ */
 export const fetchAdvancedUserSearch = async ({ username, location, minRepos }) => {
   const queryParts = [];
 
@@ -16,12 +24,13 @@ export const fetchAdvancedUserSearch = async ({ username, location, minRepos }) 
     },
   });
 
-  const userDetails = await Promise.all(
+  // Fetch full user details for each user in search results
+  const detailedUsers = await Promise.all(
     response.data.items.map(async (user) => {
-      const detailRes = await axios.get(user.url);
-      return detailRes.data;
+      const userDetails = await axios.get(user.url);
+      return userDetails.data;
     })
   );
 
-  return userDetails;
+  return detailedUsers;
 };
