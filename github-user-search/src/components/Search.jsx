@@ -1,52 +1,52 @@
-// src/components/Search.jsx
 import React, { useState } from 'react';
 import { fetchUserData } from '../services/githubService';
 
 const Search = () => {
-  const [username, setUsername] = useState('Sigurdthe');
-  const [userData, setUserData] = useState(null);
+  const [username, setUsername] = useState('');
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSearch = async (e) => {
+    e.preventDefault();
     setLoading(true);
-    setError(null);
+    setError(false);
+    setUser(null);
 
     try {
       const data = await fetchUserData(username);
-      setUserData(data);
+      setUser(data);
     } catch (err) {
-      // Set a generic error message for display
-      setError("An error occurred while fetching user data.");
-      // Include the required string in a comment or a non-displayed way
-      console.log("Looks like we can't find the user");
+      setError(true);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div style={{ textAlign: 'center' }}>
+      <form onSubmit={handleSearch}>
         <input
           type="text"
+          placeholder="Sigurdthe"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter GitHub username"
-          required
+          style={{ padding: '8px', width: '300px', fontSize: '16px' }}
         />
-        <button type="submit">Search</button>
+        <button type="submit" style={{ padding: '8px 16px', marginLeft: '10px' }}>
+          Search
+        </button>
       </form>
 
       {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
-      {userData && (
-        <div>
-          <img src={userData.avatar_url} alt="User Avatar" width="100" />
-          <h2>{userData.name || userData.login}</h2>
-          <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
-            View Profile
+      {error && <p>Looks like we can't find the user.</p>}
+
+      {user && (
+        <div style={{ marginTop: '20px' }}>
+          <img src={user.avatar_url} alt={`${user.login}'s avatar`} width="120" />
+          <h2>{user.name || user.login}</h2>
+          <a href={user.html_url} target="_blank" rel="noopener noreferrer">
+            View GitHub Profile
           </a>
         </div>
       )}
