@@ -1,4 +1,3 @@
-// src/components/Search.jsx
 import React, { useState } from 'react';
 import { fetchAdvancedUserSearch, fetchUserData } from '../services/githubService';
 
@@ -14,12 +13,13 @@ const Search = () => {
     event.preventDefault();
     setLoading(true);
     setError(null);
+    setUserData([]);
 
     try {
       const users = await fetchAdvancedUserSearch({ username, location, minRepos });
       setUserData(users);
     } catch (err) {
-      setError("Looks like we can't find the user(s)");
+      setError("Looks like we cant find the user");
     } finally {
       setLoading(false);
     }
@@ -33,23 +33,25 @@ const Search = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Username"
-          className="border px-2 py-1"
+          className="border px-2 py-1 w-full"
         />
         <input
           type="text"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           placeholder="Location"
-          className="border px-2 py-1"
+          className="border px-2 py-1 w-full"
         />
         <input
           type="number"
           value={minRepos}
           onChange={(e) => setMinRepos(e.target.value)}
           placeholder="Min Repos"
-          className="border px-2 py-1"
+          className="border px-2 py-1 w-full"
         />
-        <button type="submit" className="bg-blue-500 text-white px-4 py-1">Search</button>
+        <button type="submit" className="bg-blue-500 text-white px-4 py-1 rounded">
+          Search
+        </button>
       </form>
 
       {loading && <p className="mt-4">Loading...</p>}
